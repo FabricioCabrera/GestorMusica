@@ -12,7 +12,8 @@ import javax.swing.table.AbstractTableModel;
 public class ModelTableMusica extends AbstractTableModel {
 
     //Arreglo con el nombre de las columnas
-    public String[] m_colNames = {"Título", "Artista", " Álbum", "Año de lanzamiento", "Género Musical"};
+    public String[] m_colNames = {"Título", "Autor", "Artista", 
+        " Álbum", "Año de lanzamiento", "Género Musical"};
 
     public List<Musica> musica;
     private RegistrodeMusica gcontableMusica;
@@ -41,36 +42,32 @@ public class ModelTableMusica extends AbstractTableModel {
             case 0:
                 return canción.getTitulo();
             case 1:
-                return canción.getArtista();
+                return canción.getAutor();
             case 2:
-                return canción.getAlbum();
+                return canción.getArtista();
             case 3:
-                return canción.getAño_creacion();
+                return canción.getAlbum();
             case 4:
+                return canción.getAño_creacion();
+            case 5:
                 return canción.getGenero();
         }
         return new String();
     }
-
     //Sirve para definir los nombres de las columnas
     @Override
     public String getColumnName(int column) {
         return m_colNames[column];
     }
-
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         gcontableMusica.clickMusica(musica.get(rowIndex));
         return super.isCellEditable(rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
     }
-
     public List<Musica> getMusica() {
         return musica;
     }
-
     public void setMusica(List<Musica> musica) {
         this.musica = musica;
     }
-
-   
 }

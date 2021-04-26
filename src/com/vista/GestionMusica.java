@@ -17,19 +17,26 @@ public class GestionMusica {
     private JDateChooser jDateChooseraño;
     private JComboBox ComboBoxgenero;
     private JDateChooser jDateFechaNacimiento;
+    private JTextField txtautor;
     private Utilidades utilidades;
     private JFrame frameGestionMusica;
 
-    public GestionMusica(JTextField txttitulo, JTextField txtartista, JTextField txtalbum, JDateChooser jDateChooseraño, JComboBox ComboBoxgenero, JDateChooser jDateFechaNacimiento, Utilidades utilidades, JFrame frameGestionMusica) {
+    public GestionMusica(JTextField txttitulo, JTextField txtartista, 
+            JTextField txtalbum, JDateChooser jDateChooseraño, JComboBox ComboBoxgenero, 
+            JDateChooser jDateFechaNacimiento, JTextField txtautor, 
+            Utilidades utilidades, JFrame frameGestionMusica) {
         this.txttitulo = txttitulo;
         this.txtartista = txtartista;
         this.txtalbum = txtalbum;
         this.jDateChooseraño = jDateChooseraño;
         this.ComboBoxgenero = ComboBoxgenero;
         this.jDateFechaNacimiento = jDateFechaNacimiento;
+        this.txtautor = txtautor;
         this.utilidades = utilidades;
         this.frameGestionMusica = frameGestionMusica;
     }
+
+   
 
     public JTextField getTxttitulo() {
         return txttitulo;
@@ -94,34 +101,49 @@ public class GestionMusica {
     public void setFrameGestionMusica(JFrame frameGestionMusica) {
         this.frameGestionMusica = frameGestionMusica;
     }
-    
+
+    public JTextField getTxtautor() {
+        return txtautor;
+    }
+
+    public void setTxtautor(JTextField txtautor) {
+        this.txtautor = txtautor;
+    }
+
     public void limpiarCamposMusica() {
         txttitulo.setText("");
         txtartista.setText("");
         txtalbum.setText("");
         jDateChooseraño.setDate(null);;
         ComboBoxgenero.setSelectedIndex(0);
+        txtautor.setText(" ");
     }
 
     public Musica guardarEditar(boolean isEditar) {
         if (txttitulo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(frameGestionMusica, "El campo Título no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frameGestionMusica, 
+                    "El campo Título no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
             txttitulo.requestFocus();// Sirve para ubicar el cursor en un campo vacio.
             return null;
         }
         if (txtartista.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(frameGestionMusica, "El campo Artista no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frameGestionMusica, 
+                    "El campo Artista no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
             txtartista.requestFocus();
             return null;
         }
         if (txtalbum.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(frameGestionMusica, "El campo album no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frameGestionMusica, 
+                    "El campo album no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
             txtalbum.requestFocus();
             return null;
         }
-
-
-        
+         if (txtautor.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(frameGestionMusica, 
+                    "El campo autor no tiene datos.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtautor.requestFocus();
+            return null;
+        }
         Musica cancion = new Musica();
         cancion.setTitulo(txttitulo.getText());
         cancion.setArtista(txtartista.getText());
@@ -129,7 +151,7 @@ public class GestionMusica {
         cancion.setAño_creacion(jDateChooseraño.getDate());
         cancion.setGenero(String.valueOf(ComboBoxgenero.getSelectedItem()));
         cancion.setFecha_registro(new Date());
+        cancion.setAutor(txtautor.getText());
         return cancion;
     }
-
 }

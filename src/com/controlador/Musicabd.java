@@ -29,24 +29,26 @@ public class Musicabd {
         String sql;
         if (cancion.getFecha_registro() == null) {
             sql = "INSERT INTO registromusica (idregistromusica, titulo, artista, "
-                    + "album, año_creacion, genero, fecha_registro ) "
-                    + "VALUES ('" + String.valueOf(cancion.getIdregistromusica()) + "','"
-                    + "" + cancion.getTitulo() + "', '"
-                    + "" + cancion.getArtista() + "', '"
-                    + "" + cancion.getAlbum() + "', '"
-                    + "" + utilidades.devolverFecha(cancion.getAño_creacion()) + "', '"
-                    + "" + cancion.getGenero() + "')";
-
-        } else {
-            sql = "INSERT INTO registromusica (idregistromusica, titulo, artista, "
-                    + "album, año_creacion, genero, fecha_registro ) "
+                    + "album, año_creacion, genero, fecha_registro, autor ) "
                     + "VALUES ('" + String.valueOf(cancion.getIdregistromusica()) + "','"
                     + "" + cancion.getTitulo() + "', '"
                     + "" + cancion.getArtista() + "', '"
                     + "" + cancion.getAlbum() + "', '"
                     + "" + utilidades.devolverFecha(cancion.getAño_creacion()) + "', '"
                     + "" + cancion.getGenero() + "', '"
-                    + "" + utilidades.devolverFecha(cancion.getFecha_registro()) + "')";
+                    + "" + cancion.getAutor() + "')";
+
+        } else {
+            sql = "INSERT INTO registromusica (idregistromusica, titulo, artista, "
+                    + "album, año_creacion, genero, fecha_registro, autor ) "
+                    + "VALUES ('" + String.valueOf(cancion.getIdregistromusica()) + "','"
+                    + "" + cancion.getTitulo() + "', '"
+                    + "" + cancion.getArtista() + "', '"
+                    + "" + cancion.getAlbum() + "', '"
+                    + "" + utilidades.devolverFecha(cancion.getAño_creacion()) + "', '"
+                    + "" + cancion.getGenero() + "', '"
+                    + "" + utilidades.devolverFecha(cancion.getFecha_registro()) + "', '"
+                    + "" + cancion.getAutor() + "')";
         }
         try {
             Conexionbase co = new Conexionbase();
@@ -56,7 +58,6 @@ public class Musicabd {
             stm.close();
             con.close();
             return true;
-
         } catch (SQLException ex) {
             System.out.println("Error" + ex.getLocalizedMessage());
         }
@@ -68,7 +69,8 @@ public class Musicabd {
         Statement stm = null;
         Connection con = null;
 
-        String sql = "delete from registromusica where idregistromusica= " + eliminar.getIdregistromusica();
+        String sql = "delete from registromusica where idregistromusica= "
+                + "" + eliminar.getIdregistromusica();
         try {
             Conexionbase co = new Conexionbase();
             con = co.Conectar();
@@ -90,16 +92,18 @@ public class Musicabd {
         if (edita.getFecha_registro() == null) {
             String sql = "UPDATE registromusica SET titulo='" + edita.getTitulo() + ""
                     + "', artista='" + edita.getArtista() + "', album='" + edita.getAlbum() + ""
-                    + "' , año_creacion='" + utilidades.devolverFecha(edita.getAño_creacion()) + "' , genero= '" + edita.getGenero() + ""
-                    + "'   WHERE (idregistromusica=" + edita.getIdregistromusica() + ")";
+                    + "', año_creacion='" + utilidades.devolverFecha(edita.getAño_creacion()) + ""
+                    + "', genero= '" + edita.getGenero() + "', autor= '" + edita.getAutor() + ""
+                    + "'  WHERE (idregistromusica=" + edita.getIdregistromusica() + ")";
 
         } else {
             String sql = "UPDATE registromusica SET titulo='" + edita.getTitulo() + ""
                     + "', artista='" + edita.getArtista() + "', album='" + edita.getAlbum() + ""
-                    + "' , año_creacion='" + utilidades.devolverFecha(edita.getAño_creacion()) + "' , genero= '" + edita.getGenero() + ""
+                    + "', año_creacion='" + utilidades.devolverFecha(edita.getAño_creacion()) + ""
+                    + "', genero= '" + edita.getGenero() + ""
                     + "', fecha_registro= '" + utilidades.devolverFecha(edita.getFecha_registro()) + ""
-                    + "'   WHERE (idregistromusica=" + edita.getIdregistromusica() + ")";
-
+                    + "', autor= '" + edita.getAutor() + ""
+                    + "'  WHERE (idregistromusica=" + edita.getIdregistromusica() + ")";
             try {
                 Conexionbase co = new Conexionbase();
                 con = co.Conectar();
@@ -116,7 +120,7 @@ public class Musicabd {
         return true;
     }
 
-    //Sirve para traer todos los registros de persona de la base de datos 
+    //Sirve para traer todos los registros de música de la base de datos 
     public List<Musica> ObtenerRegistroM() {
         Connection co = null;
         Statement stm = null;
@@ -137,6 +141,7 @@ public class Musicabd {
                 c.setAño_creacion(rs.getDate("año_creacion"));
                 c.setGenero(rs.getString("genero"));
                 c.setFecha_registro(rs.getDate("fecha_registro"));
+                c.setAutor(rs.getString("autor"));
                 listaMusica.add(c);
             }
             stm.close();
@@ -147,7 +152,7 @@ public class Musicabd {
         }
         return listaMusica;
     }
-    
+
     public List<Musica> ObtenerMusicaSql(String subSql) {
         Connection co = null;
         Statement stm = null;
@@ -170,6 +175,7 @@ public class Musicabd {
                 c.setAño_creacion(rs.getDate("año_creacion"));
                 c.setGenero(rs.getString("genero"));
                 c.setFecha_registro(rs.getDate("fecha_registro"));
+                c.setAutor(rs.getString("autor"));
                 listaMusica.add(c);
             }
             stm.close();
@@ -183,7 +189,7 @@ public class Musicabd {
         return listaMusica;
     }
 
-    //Metodo para buscar una canción por título
+    //Metodo para buscar una canción por alguno de sus atributos
     public Musica buscarCancion(String cod) {
         //conexión con la base de datos
         Connection con = null;
@@ -208,6 +214,7 @@ public class Musicabd {
                 cancion.setAño_creacion(rs.getDate(5));
                 cancion.setGenero(rs.getString(6));
                 cancion.setFecha_registro(rs.getDate(7));
+                cancion.setAutor(rs.getString(8));
             }
             stm.close();
             rs.close();

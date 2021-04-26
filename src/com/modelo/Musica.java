@@ -11,6 +11,7 @@ public class Musica {
     private Date año_creacion;
     private String genero;
     private Date fecha_registro;
+    private String autor;
 
     public int getIdregistromusica() {
         return idregistromusica;
@@ -67,5 +68,14 @@ public class Musica {
     public void setFecha_registro(Date fecha_registro) {
         this.fecha_registro = fecha_registro;
     }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+    
 
 }
